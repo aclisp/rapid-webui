@@ -21,6 +21,32 @@ public class NewEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPasswd() {
+        return passwd;
+    }
+    
+    public NewEntity() {
+        
+    }
+    
+    public NewEntity(String username, String password) {
+        this.username = username;
+        this.passwd = password;
+    }
+    
+    private String username;
+    private String passwd;
+    private int loginCount;
+    
+    public int incrementLoginCount() {
+        loginCount++;
+        return loginCount;
+    }
+
     public Long getId() {
         return id;
     }
