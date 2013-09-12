@@ -60,10 +60,11 @@ public class UserBean {
     // FIXME transaction rollback?
     public String addCustomer() {
         assert entityManagerHelper != null;
-        EntityManager em = entityManagerHelper.createEntityManager();
+        EntityManager em = null;
         EntityTransaction tx = null;
         
         try {
+            em = entityManagerHelper.createEntityManager();
             tx = em.getTransaction();
             tx.begin();
             
@@ -74,11 +75,11 @@ public class UserBean {
             
             tx.commit();
         } catch (RuntimeException ex) {
-            if (tx != null) tx.rollback();
+            if (tx != null && tx.isActive()) tx.rollback();
             addWarnMessage("Something wrong!", ex.getMessage());
             throw ex;
         } finally {
-            em.close();
+            if (em != null) em.close();
         }
         
         addInfoMessage("Add successfully!", "Hello " + customerName + ", Your data is saved.");

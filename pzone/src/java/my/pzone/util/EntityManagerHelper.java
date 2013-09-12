@@ -52,10 +52,11 @@ public class EntityManagerHelper {
     }
     
     public void runWithinTransaction(EntityManagerCallback callback) {
-        EntityManager em = this.createEntityManager();
+        EntityManager em = null;
         EntityTransaction tx = null;
         
         try {
+            em = this.createEntityManager();
             tx = em.getTransaction();
             tx.begin();
             
@@ -63,29 +64,30 @@ public class EntityManagerHelper {
             
             tx.commit();
         } catch (RuntimeException ex) {
-            if (tx != null) tx.rollback();
+            if (tx != null && tx.isActive()) tx.rollback();
             
             callback.onError(ex);
             
             throw ex;
         } finally {
-            em.close();
+            if (em != null) em.close();
         }
         
         callback.onSuccess();
     }
     
     public void runWithoutTransaction(EntityManagerCallback callback) {
-        EntityManager em = this.createEntityManager();
+        EntityManager em = null;
         
         try {
+            em = this.createEntityManager();
             callback.run(em);            
         } catch (RuntimeException ex) {
             
             callback.onError(ex);
             throw ex;
         } finally {
-            em.close();
+            if (em != null) em.close();
         }       
         
         callback.onSuccess();
