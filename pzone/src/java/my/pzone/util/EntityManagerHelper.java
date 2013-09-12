@@ -35,6 +35,7 @@ public class EntityManagerHelper {
     public void initialize() {
         logger.info("#### init EntityManagerHelper");
         entityManagerFactory = Persistence.createEntityManagerFactory("pzonePU");
+        assert entityManagerFactory != null;
     }
     
     @PreDestroy

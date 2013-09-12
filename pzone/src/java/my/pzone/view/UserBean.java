@@ -103,7 +103,7 @@ public class UserBean {
 
 
             public void onSuccess() {
-                addInfoMessage("Add successfully!", "Hello " + customerName + ", Your data is saved.");
+                addInfoMessage("Add successfully!", "Hello " + customerName + ", your data is saved.");
             }
         });
         
