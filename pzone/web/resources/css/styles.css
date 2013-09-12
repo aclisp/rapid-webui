@@ -1,0 +1,12 @@
+/* 
+    Document   : styles
+    Created on : Sep 12, 2013, 6:55:30 PM
+    Author     : ehaohug
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+.ui-widget, .ui-widget .ui-widget {
+    font-size: 90% !important;
+}
+
