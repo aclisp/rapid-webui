@@ -4,11 +4,11 @@
  */
 package my.pzone.view;
 
+import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
@@ -23,11 +23,8 @@ import my.pzone.util.EntityManagerHelper;
  */
 @ManagedBean
 @SessionScoped
-public class UserBean {
+public class UserBean implements Serializable {
     private static final Logger logger = Logger.getLogger(UserBean.class.getName());
-    
-    @ManagedProperty(value="#{entityManagerHelper}")
-    private EntityManagerHelper entityManagerHelper;
     
     // FIXME
     private String customerName;
@@ -57,18 +54,15 @@ public class UserBean {
     public UserBean() {
     }
 
-    public void setEntityManagerHelper(EntityManagerHelper entityManagerHelper) {
-        this.entityManagerHelper = entityManagerHelper;
-    }
-    
+
     // FIXME transaction rollback?
     public String addCustomer() {
-        assert entityManagerHelper != null;
+
         EntityManager em = null;
         EntityTransaction tx = null;
         
         try {
-            em = entityManagerHelper.createEntityManager();
+            em = EntityManagerHelper.createEntityManager();
             tx = em.getTransaction();
             tx.begin();
             
@@ -92,9 +86,8 @@ public class UserBean {
     }
     
     public String addCustomer1() {
-        assert entityManagerHelper != null;
         
-        entityManagerHelper.runWithinTransaction(new EntityManagerCallback() {
+        EntityManagerHelper.runWithinTransaction(new EntityManagerCallback() {
             public void run(EntityManager em) {
                 Customer c = new Customer();
                 c.setCustomerName(customerName);

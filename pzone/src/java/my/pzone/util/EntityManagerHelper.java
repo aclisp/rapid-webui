@@ -23,7 +23,7 @@ import javax.persistence.Persistence;
 public class EntityManagerHelper {
     
     private static final Logger logger = Logger.getLogger(EntityManagerHelper.class.getName());
-    private EntityManagerFactory entityManagerFactory;
+    private static EntityManagerFactory entityManagerFactory;
     
     /**
      * Creates a new instance of EntityManagerHelper
@@ -44,20 +44,20 @@ public class EntityManagerHelper {
         entityManagerFactory.close();
     }
     
-    public EntityManager createEntityManager() {
+    public static EntityManager createEntityManager() {
         assert entityManagerFactory != null;
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         assert entityManager != null;
         return entityManager;
     }
     
-    public void runWithinTransaction(EntityManagerCallback callback) {
+    public static void runWithinTransaction(EntityManagerCallback callback) {
         EntityManager em = null;
         EntityTransaction tx = null;
         boolean success = false;
         
         try {
-            em = this.createEntityManager();
+            em = createEntityManager();
             tx = em.getTransaction();
             tx.begin();
             
@@ -77,12 +77,12 @@ public class EntityManagerHelper {
         if (success) callback.onSuccess();
     }
     
-    public void runWithoutTransaction(EntityManagerCallback callback) {
+    public static void runWithoutTransaction(EntityManagerCallback callback) {
         EntityManager em = null;
         boolean success = false;
         
         try {
-            em = this.createEntityManager();
+            em = createEntityManager();
             
             callback.run(em);   
             
