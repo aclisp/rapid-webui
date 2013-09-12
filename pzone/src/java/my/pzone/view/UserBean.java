@@ -8,7 +8,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import my.pzone.entity.Customer;
+import my.pzone.util.Callback;
 import my.pzone.util.EntityManagerHelper;
 
 /**
@@ -19,7 +21,7 @@ import my.pzone.util.EntityManagerHelper;
 @SessionScoped
 public class UserBean {
     @ManagedProperty(value="#{entityManagerHelper}")
-    private EntityManagerHelper emh;
+    private EntityManagerHelper entityManagerHelper;
     
     // FIXME
     private String customerName;
@@ -49,30 +51,48 @@ public class UserBean {
     public UserBean() {
     }
 
-    public void setEmh(EntityManagerHelper emh) {
-        this.emh = emh;
+    public void setEntityManagerHelper(EntityManagerHelper entityManagerHelper) {
+        this.entityManagerHelper = entityManagerHelper;
     }
     
     // FIXME transaction rollback?
     public String addCustomer() {
-        assert emh != null;
-        EntityManager em = emh.createEntityManager();
-        assert em != null;
+        assert entityManagerHelper != null;
+        EntityManager em = entityManagerHelper.createEntityManager();
+        EntityTransaction tx = null;
         
         try {
-            em.getTransaction().begin();
+            tx = em.getTransaction();
+            tx.begin();
             
             Customer c = new Customer();
             c.setCustomerName(customerName);
             c.setCustomerPassword(customerPassword);
-            
             em.persist(c);
             
-            em.getTransaction().commit();
+            tx.commit();
+        } catch (RuntimeException ex) {
+            if (tx != null) tx.rollback();
+            throw ex;
         } finally {
             em.close();
         }
         
         return "addCustomer"; // TODO show output?
+    }
+    
+    public String addCustomer1() {
+        assert entityManagerHelper != null;
+        
+        entityManagerHelper.runWithinTransaction(new Callback() {
+            public void run(EntityManager em) {
+                Customer c = new Customer();
+                c.setCustomerName(customerName);
+                c.setCustomerPassword(customerPassword);
+                em.persist(c);
+            }
+        });
+        
+        return "addCustomer1";
     }
 }

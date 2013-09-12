@@ -11,6 +11,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
 /**
@@ -44,6 +45,35 @@ public class EntityManagerHelper {
     
     public EntityManager createEntityManager() {
         assert entityManagerFactory != null;
-        return entityManagerFactory.createEntityManager();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        assert entityManager != null;
+        return entityManager;
+    }
+    
+    public void runWithinTransaction(Callback callback) {
+        EntityManager em = this.createEntityManager();
+        EntityTransaction tx = null;
+        
+        try {
+            tx = em.getTransaction();
+            tx.begin();
+            callback.run(em);            
+            tx.commit();
+        } catch (RuntimeException ex) {
+            if (tx != null) tx.rollback();
+            throw ex;
+        } finally {
+            em.close();
+        }
+    }
+    
+    public void runWithoutTransaction(Callback callback) {
+        EntityManager em = this.createEntityManager();
+        
+        try {
+            callback.run(em);            
+        } finally {
+            em.close();
+        }        
     }
 }

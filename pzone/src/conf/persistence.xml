@@ -5,12 +5,11 @@
     <non-jta-data-source>java:comp/env/jdbc/pzone</non-jta-data-source>
     <class>my.pzone.entity.Customer</class>
     <properties>
-      <property name="javax.persistence.nonJtaDataSource" value="java:comp/env/jdbc/pzone"/>
       <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
       <property name="eclipselink.logging.level" value="FINEST"/>
       <property name="eclipselink.logging.level.sql" value="FINEST"/>
       <property name="eclipselink.logging.parameters" value="true"/>
-      <property name="eclipselink.logging.timestamp" value="true"/>      
+      <property name="eclipselink.logging.timestamp" value="false"/>      
     </properties>
   </persistence-unit>
 </persistence>
