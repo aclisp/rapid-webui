@@ -64,11 +64,10 @@ public class EntityManagerHelper {
             
             tx.commit();
         } catch (RuntimeException ex) {
-            if (tx != null && tx.isActive()) tx.rollback();
-            
+
             callback.onError(ex);
             
-            throw ex;
+            if (tx != null && tx.isActive()) tx.rollback();
         } finally {
             if (em != null) em.close();
         }
@@ -81,11 +80,13 @@ public class EntityManagerHelper {
         
         try {
             em = this.createEntityManager();
-            callback.run(em);            
+            
+            callback.run(em);   
+            
         } catch (RuntimeException ex) {
             
             callback.onError(ex);
-            throw ex;
+            
         } finally {
             if (em != null) em.close();
         }       

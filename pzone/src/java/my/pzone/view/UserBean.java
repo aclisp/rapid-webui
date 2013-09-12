@@ -4,6 +4,8 @@
  */
 package my.pzone.view;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -22,6 +24,8 @@ import my.pzone.util.EntityManagerHelper;
 @ManagedBean
 @SessionScoped
 public class UserBean {
+    private static final Logger logger = Logger.getLogger(UserBean.class.getName());
+    
     @ManagedProperty(value="#{entityManagerHelper}")
     private EntityManagerHelper entityManagerHelper;
     
@@ -75,9 +79,10 @@ public class UserBean {
             
             tx.commit();
         } catch (RuntimeException ex) {
-            if (tx != null && tx.isActive()) tx.rollback();
+            logger.log(Level.WARNING, "Exception in addCustomer", ex);
             addWarnMessage("Something wrong!", ex.getMessage());
-            throw ex;
+            
+            if (tx != null && tx.isActive()) tx.rollback();
         } finally {
             if (em != null) em.close();
         }
