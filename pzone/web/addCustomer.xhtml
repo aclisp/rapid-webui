@@ -8,6 +8,8 @@
     </h:head>
     <h:body>
         <h:form>
+            <p:messages showDetail="true" autoUpdate="true" closable="true" />
+            
             <p:panel header="Enter your name and passwords">
                 <h:panelGrid columns="2">
                     <h:outputText value="Name: " /> 
@@ -16,7 +18,15 @@
                     <p:password value="#{userBean.customerPassword}" feedback="true"/>
                 </h:panelGrid>
             </p:panel>
-            <p:commandButton value="Add" action="#{userBean.addCustomer}" />
+            
+            <p>
+                <p:commandButton value="Add Customer" action="#{userBean.addCustomer}" />
+            </p>
+
+            <p>
+                <p:commandButton value="Add Customer (another way)" action="#{userBean.addCustomer1}" />
+            </p>
+            
         </h:form>
         
         <!-- TODO show output? -->

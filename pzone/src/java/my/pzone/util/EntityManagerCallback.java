@@ -10,8 +10,12 @@ import javax.persistence.EntityManager;
  *
  * @author ehaohug
  */
-public interface Callback {
-
+public interface EntityManagerCallback {
+    
     public void run(EntityManager em);
+    
+    public void onError(RuntimeException ex);
+    
+    public void onSuccess();
     
 }

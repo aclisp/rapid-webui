@@ -4,13 +4,15 @@
  */
 package my.pzone.view;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import my.pzone.entity.Customer;
-import my.pzone.util.Callback;
+import my.pzone.util.EntityManagerCallback;
 import my.pzone.util.EntityManagerHelper;
 
 /**
@@ -73,26 +75,46 @@ public class UserBean {
             tx.commit();
         } catch (RuntimeException ex) {
             if (tx != null) tx.rollback();
+            addWarnMessage("Something wrong!", ex.getMessage());
             throw ex;
         } finally {
             em.close();
         }
         
+        addInfoMessage("Add successfully!", "Hello " + customerName + ", Your data is saved.");
         return "addCustomer"; // TODO show output?
     }
     
     public String addCustomer1() {
         assert entityManagerHelper != null;
         
-        entityManagerHelper.runWithinTransaction(new Callback() {
+        entityManagerHelper.runWithinTransaction(new EntityManagerCallback() {
             public void run(EntityManager em) {
                 Customer c = new Customer();
                 c.setCustomerName(customerName);
                 c.setCustomerPassword(customerPassword);
                 em.persist(c);
             }
+
+
+            public void onError(RuntimeException ex) {
+                addWarnMessage("Something wrong!", ex.getMessage());
+            }
+
+
+            public void onSuccess() {
+                addInfoMessage("Add successfully!", "Hello " + customerName + ", Your data is saved.");
+            }
         });
         
-        return "addCustomer1";
+        return "addCustomer";
+    }
+    
+    private void addInfoMessage(String summary, String detail) {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, summary, detail));
+    }
+    
+    private void addWarnMessage(String summary, String detail) {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, summary, detail));
     }
 }
