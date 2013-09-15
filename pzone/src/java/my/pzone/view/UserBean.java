@@ -15,7 +15,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import my.pzone.entity.Customer;
 import my.pzone.util.EntityManagerCallback;
-import my.pzone.util.EntityManagerHelper;
+import my.pzone.util.PersistenceUnitDefault;
 
 /**
  *
@@ -62,7 +62,7 @@ public class UserBean implements Serializable {
         EntityTransaction tx = null;
         
         try {
-            em = EntityManagerHelper.createEntityManager();
+            em = PersistenceUnitDefault.getInstance().createEntityManager();
             tx = em.getTransaction();
             tx.begin();
             
@@ -87,20 +87,19 @@ public class UserBean implements Serializable {
     
     public String addCustomer1() {
         
-        EntityManagerHelper.runWithinTransaction(new EntityManagerCallback() {
+        PersistenceUnitDefault.getInstance().runWithinTransaction(new EntityManagerCallback() {
+            @Override
             public void run(EntityManager em) {
                 Customer c = new Customer();
                 c.setCustomerName(customerName);
                 c.setCustomerPassword(customerPassword);
                 em.persist(c);
             }
-
-
+            @Override
             public void onError(RuntimeException ex) {
                 addWarnMessage("Something wrong!", ex.getMessage());
             }
-
-
+            @Override
             public void onSuccess() {
                 addInfoMessage("Add successfully!", "Hello " + customerName + ", your data is saved.");
             }
