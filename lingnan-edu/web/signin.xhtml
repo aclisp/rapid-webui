@@ -6,7 +6,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
 
-  <f:view contentType="text/html">
+  <f:view contentType="text/html" locale="zh_CN">
     <h:head>
       <f:facet name="first">
         <meta charset="utf-8"/>
@@ -36,8 +36,9 @@
 
           <p>岭南艺术的学员和教师登录后可查询个人信息</p>
 
-          <p:inputText id="userName" styleClass="form-control" required="true" value="#{userController.userName}" />
-          <p:password id="password" styleClass="form-control" required="true" value="#{userController.userPassword}" />
+          <h:messages style="color:red;" />
+          <p:inputText id="userName" label="姓名" styleClass="form-control" required="true" value="#{userController.userName}" />
+          <p:password id="password" label="密码" styleClass="form-control" required="true" value="#{userController.userPassword}" />
           <p:watermark for="userName" value="姓名或手机号"/>
           <p:watermark for="password" value="密码"/>
 
