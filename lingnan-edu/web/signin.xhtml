@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+  <f:view contentType="text/html">
+    <h:head>
+      <f:facet name="first">
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+        <link rel="shortcut icon" href="#{resource['images:favicon.ico']}" />
+        <title>岭南艺术 - 用户登录</title>
+      </f:facet>
+      <f:facet name="last">
+        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="#{resource['css:signin.css']}" />
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+          <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+      </f:facet>
+    </h:head>
+
+    <h:body>
+
+      <div class="container">
+
+        <h:form styleClass="form-signin">
+          <h2 class="form-signin-heading">用户登录</h2>
+
+          <p>岭南艺术的学员和教师登录后可查询个人信息</p>
+
+          <p:inputText id="userName" styleClass="form-control" required="true" value="#{userController.userName}" />
+          <p:password id="password" styleClass="form-control" required="true" value="#{userController.userPassword}" />
+          <p:watermark for="userName" value="姓名或手机号"/>
+          <p:watermark for="password" value="密码"/>
+
+          <label class="checkbox">
+            <h:selectBooleanCheckbox value="#{userController.staySignin}" /> 记住登录状态
+          </label>
+          <h:commandButton value="登录" styleClass="btn btn-lg btn-primary btn-block" action="#{userController.signin}" />
+        </h:form>
+
+      </div> <!-- /container -->
+
+      <!-- Bootstrap core JavaScript
+        ================================================== -->
+      <!-- Placed at the end of the document so the pages load faster -->
+    </h:body>
+  </f:view>
+</html>

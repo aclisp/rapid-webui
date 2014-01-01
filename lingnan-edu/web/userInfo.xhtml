@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+  <f:view contentType="text/html">
+    <h:head>
+      <f:facet name="first">
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+        <link rel="shortcut icon" href="#{resource['images:favicon.ico']}" />
+        <title>岭南艺术 - 用户信息</title>
+      </f:facet>
+      <f:facet name="last">
+        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="#{resource['css:styles.css']}" />
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+          <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+      </f:facet>
+    </h:head>
+
+    <h:body>
+
+      <p:accordionPanel multiple="true" activeIndex="0,1,2">
+        <p:tab title="当前登录状态">
+          <h:panelGrid columns="2" cellpadding="10">
+            <h:outputText value="姓名"/>
+            <h:outputText value="#{userController.userName}"/>
+            <h:outputText value="密码"/>
+            <h:outputText value="#{userController.userPassword}"/>
+            <h:outputText value="记住登录状态"/>
+            <h:outputText value="#{userController.staySignin}"/>
+          </h:panelGrid>
+        </p:tab>
+        <p:tab title="用户详细资料">
+          <h:panelGrid columns="2" cellpadding="10">
+            <h:outputText value="电话1"/>
+            <h:outputText value="13922115830"/>
+            <h:outputText value="电话2"/>
+            <h:outputText value="13570486841"/>
+          </h:panelGrid>
+        </p:tab>
+        <p:tab title="用户缴费信息">
+          <h:panelGrid columns="2" cellpadding="10">
+            <h:outputText value="余额"/>
+            <h:outputText value="&yen;300"/>
+            <h:outputText value="剩余课时"/>
+            <h:outputText value="50节"/>
+          </h:panelGrid>
+        </p:tab>
+      </p:accordionPanel>
+
+      <!-- Bootstrap core JavaScript
+        ================================================== -->
+      <!-- Placed at the end of the document so the pages load faster -->
+    </h:body>
+  </f:view>
+</html>
